@@ -1,11 +1,31 @@
 import React, { useCallback, useState } from 'react';
-import Button from '@mui/material/Button';
+import Button, { ButtonProps } from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import styled from '@emotion/styled'
 import './App.css';
 
 import * as Constants from './code/constants';
+
+type StyledButtonProps = Omit<ButtonProps, "color"> & {
+  color: string;
+}
+
+const StyledButton = styled(({ color, ...props }: StyledButtonProps) => <Button {...props} />)`
+  border-radius: 35px;
+  background-color: ${({ color }) => color};
+  font-size: 18px;
+  :hover{
+    background-color: ${({ color }) => color};
+  }
+`;
+
+const StyledListItem = styled(ListItem)`
+    border-radius: 35px;
+    background-color: ${({ color }) => color};
+    font-size: 18px;
+`;
 
 const App = () => {
   const [color, setColor] = useState<string>("black");
@@ -41,28 +61,17 @@ const App = () => {
 
   return (
     <div className="App">
-      <Button variant="contained" onClick={randomColor}
-        style={{
-          borderRadius: 35,
-          backgroundColor: color,
-          padding: "18px 36px",
-          fontSize: "18px"
-        }}
-      >{color}</Button>
+      <StyledButton onClick={randomColor} variant="contained" color={color}>{color}</StyledButton>
 
       <List>
         {colorList.map((color, index) =>
-          <ListItem style={{
-            borderRadius: 35,
-            backgroundColor: color,
-            fontSize: "18px"
-          }}
+          <StyledListItem
             key={index}
             color={color}>
             <ListItemText
               primary={color}
             />
-          </ListItem>
+          </StyledListItem>
           ,
         )}
       </List>
